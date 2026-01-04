@@ -1,14 +1,41 @@
 // Firebase Integration for Visitor Suggestions
 const SuggestionManager = {
     async addSuggestion(chamber, suggestion) {
+        function getDB() {
+            console.debug('getDB: window._firebaseConfigLoaded=', window._firebaseConfigLoaded, 'window.db=', window.db, 'typeof firebase=', typeof firebase);
+            if (typeof window !== 'undefined' && window.db) return window.db;
+            try {
+                if (typeof firebase !== 'undefined' && firebase.firestore) {
+                    // initialize and cache
+                    window.db = firebase.firestore();
+                    console.debug('getDB: initialized firebase.firestore() and cached on window.db');
+                    return window.db;
+                }
+            } catch (err) {
+                console.error('getDB: error while creating firebase.firestore():', err);
+            }
+            return null;
+        }
+
+        const database = getDB();
+        if (!database) {
+            const err = new Error('Firestore not initialized');
+            console.error('SuggestionManager.addSuggestion: Firestore not initialized. window._firebaseConfigLoaded=', window._firebaseConfigLoaded, 'window.db=', window.db, 'firebase=', typeof firebase !== 'undefined' ? firebase : firebase);
+            throw err;
+        }
+
         try {
-            await db.collection('suggestions').add({
+            const timestamp = (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue)
+                ? firebase.firestore.FieldValue.serverTimestamp()
+                : new Date();
+
+            await database.collection('suggestions').add({
                 chamber: chamber,
                 visitorName: suggestion.visitorName,
                 email: suggestion.email,
                 rating: suggestion.rating,
                 suggestion: suggestion.suggestion,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: timestamp
             });
             return true;
         } catch (error) {
