@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Environmental Museum</title>
+    <link rel="stylesheet" href="sug.css">
+    <style>
+        .admin-header {
+            background: linear-gradient(135deg, #0d3b1a 0%, #1a5a2a 50%, #2d7a4a 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .admin-header .user-info {
+            text-align: right;
+        }
+
+        .admin-header .user-email {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 20px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .chamber-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chamber-title {
+            color: #0d3b1a;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .feedback-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feedback-name {
+            font-weight: 600;
+            color: #0d3b1a;
+            font-size: 1.1em;
+        }
+
+        .feedback-rating {
+            color: #ffc107;
+            font-size: 0.95em;
+        }
+
+        .feedback-text {
+            color: #555;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .feedback-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .feedback-email {
+            color: #666;
+        }
+
+        .delete-feedback-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+
+        .delete-feedback-btn:hover {
+            background: #ff5252;
+        }
+
+        .no-feedback {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .export-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .export-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .not-authenticated {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .not-authenticated p {
+            color: #ff6b6b;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .back-to-login-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-to-login-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="adminContent" style="display: none;">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div>
+                <h1>📊 Admin Dashboard</h1>
+                <p>Environmental Museum Visitor Feedback Management</p>
+            </div>
+            <div class="user-info">
+                <div class="user-email" id="userEmail"></div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Admin Container -->
+        <div class="admin-container">
+            <!-- Statistics -->
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <h2>Export Data</h2>
+                <button class="export-btn" id="exportBtn">📥 Export as CSV</button>
+                <p style="color: #666; margin-top: 10px; font-size: 0.9em;">Download all feedback data in CSV format</p>
+            </div>
+
+            <!-- Feedback by Chamber -->
+            <div id="feedbackContainer"></div>
+        </div>
+    </div>
+
+    <div id="loadingContainer" class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading feedback data...</p>
+    </div>
+
+    <div id="notAuthenticatedContainer" class="not-authenticated" style="display: none;">
+        <p>⚠️ You must be logged in to access this page</p>
+        <a href="admin-login.html" class="back-to-login-btn">Go to Login</a>
+    </div>
+
+    <!-- Firebase Scripts (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/firestore.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const adminContent = document.getElementById('adminContent');
+        const loadingContainer = document.getElementById('loadingContainer');
+        const notAuthenticatedContainer = document.getElementById('notAuthenticatedContainer');
+        const userEmail = document.getElementById('userEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        const statsGrid = document.getElementById('statsGrid');
+
+        const chambers = [
+            'Solar System',
+            'Rwanda Profile',
+            'Energy',
+            'Pollution',
+            'Human-Environment Relationship',
+            'Environmental Protection Strategies',
+            'Natural Resources',
+            'Medicinal Plants',
+            'East-African Black-Mud Turtles'
+        ];
+
+        let currentUser = null;
+        let allFeedback = {};
+
+        // Check authentication
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                userEmail.textContent = user.email;
+                await loadAllFeedback();
+            } else {
+                adminContent.style.display = 'none';
+                loadingContainer.style.display = 'none';
+                notAuthenticatedContainer.style.display = 'block';
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'admin-login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Load all feedback from Firestore
+        async function loadAllFeedback() {
+            try {
+                loadingContainer.style.display = 'block';
+                adminContent.style.display = 'none';
+
+                allFeedback = {};
+                let totalFeedback = 0;
+
+                for (const chamber of chambers) {
+                    const querySnapshot = await db.collection('suggestions')
+                        .where('chamber', '==', chamber)
+                        .orderBy('timestamp', 'desc')
+                        .get();
+
+                    const feedbackArray = [];
+                    querySnapshot.forEach(doc => {
+                        feedbackArray.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                        totalFeedback++;
+                    });
+
+                    if (feedbackArray.length > 0) {
+                        allFeedback[chamber] = feedbackArray;
+                    }
+                }
+
+                displayStats(totalFeedback);
+                displayFeedback();
+
+                loadingContainer.style.display = 'none';
+                adminContent.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                loadingContainer.innerHTML = `<p style="color: #ff6b6b;">Error loading feedback: ${error.message}</p>`;
+            }
+        }
+
+        // Display statistics
+        function displayStats(totalFeedback) {
+            let avgRating = 0;
+            let ratingCount = 0;
+
+            Object.values(allFeedback).forEach(chamber => {
+                chamber.forEach(feedback => {
+                    if (feedback.rating) {
+                        avgRating += feedback.rating;
+                        ratingCount++;
+                    }
+                });
+            });
+
+            avgRating = ratingCount > 0 ? (avgRating / ratingCount).toFixed(1) : 0;
+
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${totalFeedback}</div>
+                    <div class="stat-label">Total Feedback</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${chambers.length}</div>
+                    <div class="stat-label">Chambers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">⭐ ${avgRating}</div>
+                    <div class="stat-label">Avg Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${Object.keys(allFeedback).length}</div>
+                    <div class="stat-label">Active Chambers</div>
+                </div>
+            `;
+        }
+
+        // Display feedback by chamber
+        function displayFeedback() {
+            feedbackContainer.innerHTML = '';
+
+            chambers.forEach(chamber => {
+                const feedback = allFeedback[chamber] || [];
+                const sectionHTML = `
+                    <div class="chamber-section">
+                        <h2 class="chamber-title">${chamber} ${feedback.length > 0 ? `(${feedback.length})` : ''}</h2>
+                        ${feedback.length > 0 ? feedback.map(f => createFeedbackHTML(f)).join('') : '<div class="no-feedback">No feedback yet</div>'}
+                    </div>
+                `;
+                feedbackContainer.innerHTML += sectionHTML;
+            });
+
+            // Add delete event listeners
+            document.querySelectorAll('.delete-feedback-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const feedbackId = btn.dataset.id;
+                    deleteFeedback(feedbackId);
+                });
+            });
+        }
+
+        // Create feedback HTML
+        function createFeedbackHTML(feedback) {
+            const date = new Date(feedback.timestamp.toDate()).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            const ratingStars = feedback.rating 
+                ? `${'★'.repeat(feedback.rating)}${'☆'.repeat(5 - feedback.rating)}`
+                : 'Not rated';
+
+            return `
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <span class="feedback-name">${escapeHTML(feedback.visitorName || 'Anonymous')}</span>
+                        <span class="feedback-rating">${ratingStars}</span>
+                    </div>
+                    <p class="feedback-text">${escapeHTML(feedback.suggestion)}</p>
+                    <div class="feedback-meta">
+                        <span>${date}</span>
+                        ${feedback.email ? `<span class="feedback-email">${escapeHTML(feedback.email)}</span>` : ''}
+                        <button class="delete-feedback-btn" data-id="${feedback.id}">Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Delete feedback
+        async function deleteFeedback(feedbackId) {
+            if (!confirm('Are you sure you want to delete this feedback?')) {
+                return;
+            }
+
+            try {
+                await db.collection('suggestions').doc(feedbackId).delete();
+                await loadAllFeedback();
+                alert('Feedback deleted successfully');
+            } catch (error) {
+                alert('Error deleting feedback: ' + error.message);
+            }
+        }
+
+        // Export as CSV
+        exportBtn.addEventListener('click', () => {
+            let csv = 'Chamber,Visitor Name,Email,Rating,Feedback,Date\n';
+
+            chambers.forEach(chamber => {
+                const feedback = allFeedback[chamber] || [];
+                feedback.forEach(f => {
+                    const date = new Date(f.timestamp.toDate()).toLocaleString();
+                    const row = [
+                        chamber,
+                        f.visitorName || 'Anonymous',
+                        f.email || '',
+                        f.rating || '',
+                        `"${f.suggestion.replace(/"/g, '""')}"`,
+                        date
+                    ].join(',');
+                    csv += row + '\n';
+                });
+            });
+
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `museum_feedback_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+
+        function escapeHTML(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+    </script>
+</body>
+</html>

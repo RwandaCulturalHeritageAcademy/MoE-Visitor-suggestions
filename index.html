@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Museum - Visitor Suggestions</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="admin-login.html" class="admin-login-btn">Admin Login</a>
+            <div class="header-content">
+                <h1>Environmental Museum Exhibition</h1>
+                <p>Share Your Experience & Suggestions</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Chambers Grid -->
+            <section class="chambers-section">
+                <h2>Museum Chambers</h2>
+                <div class="chambers-grid">
+                    <div class="chamber-card" data-chamber="Solar System">
+                        <div class="chamber-icon">🌍</div>
+                        <h3>Solar System</h3>
+                        <p>Explore our cosmic chamber</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Rwanda Profile">
+                        <div class="chamber-icon">🗺️</div>
+                        <h3>Rwanda Profile</h3>
+                        <p>Discover Rwanda's geography</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Energy">
+                        <div class="chamber-icon">⚡</div>
+                        <h3>Energy</h3>
+                        <p>Learn about energy sources</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Pollution">
+                        <div class="chamber-icon">💨</div>
+                        <h3>Pollution</h3>
+                        <p>Understanding environmental pollution</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Human-Environment Relationship">
+                        <div class="chamber-icon">🤝</div>
+                        <h3>Human-Environment Relationship</h3>
+                        <p>Our impact on nature</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Environmental Protection Strategies">
+                        <div class="chamber-icon">🌱</div>
+                        <h3>Environmental Protection Strategies</h3>
+                        <p>Sustainable practices</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Natural Resources">
+                        <div class="chamber-icon">⛰️</div>
+                        <h3>Natural Resources</h3>
+                        <p>Earth's valuable assets</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="Medicinal Plants">
+                        <div class="chamber-icon">🌿</div>
+                        <h3>Medicinal Plants' Botanical Garden</h3>
+                        <p>Healing plants showcase</p>
+                    </div>
+                    <div class="chamber-card" data-chamber="East-African Black-Mud Turtles">
+                        <div class="chamber-icon">🐢</div>
+                        <h3>East-African Black-Mud Turtles</h3>
+                        <p>Endangered species</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section class="suggestions-section" id="suggestionsSection" style="display: none;">
+                <div class="suggestions-header">
+                    <button class="back-btn" id="backBtn">← Back to Chambers</button>
+                    <h2 id="chamberTitle">Chamber Title</h2>
+                </div>
+
+                <!-- Only show form, not comments to visitors -->
+                <div class="form-container">
+                    <h3>Share Your Feedback</h3>
+                    <p style="color: #666; margin-bottom: 20px; font-style: italic;">Your suggestions help us improve the museum experience. Thank you!</p>
+                    <form id="suggestionForm">
+                        <div class="form-group">
+                            <label for="visitorName">Your Name</label>
+                            <input 
+                                type="text" 
+                                id="visitorName" 
+                                placeholder="Enter your name (optional)"
+                                maxlength="50"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email (optional)</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                placeholder="your@email.com"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rating">Rate Your Experience</label>
+                            <div class="rating-container">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5" class="star">★</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" class="star">★</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" class="star">★</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" class="star">★</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" class="star">★</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suggestion">Your Suggestion / Comment</label>
+                            <textarea 
+                                id="suggestion" 
+                                placeholder="Share your thoughts, feedback, or suggestions about this chamber..."
+                                rows="5"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Submit Suggestion</button>
+                    </form>
+                    <div id="successMessage" style="display: none; background: #e8f5e9; color: #4CAF50; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: center;">
+                        ✓ Thank you! Your feedback has been recorded.
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Environmental Museum Exhibition. We value your feedback!</p>
+        </footer>
+    </div>
+
+    <!-- Firebase Scripts (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-compat/firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
