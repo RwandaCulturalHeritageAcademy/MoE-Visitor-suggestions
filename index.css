@@ -474,8 +474,31 @@ textarea {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* Correcting the Admin Login Button positioning */
+    .admin-login-btn {
+        position: relative; /* Change from absolute to relative */
+        top: 0;
+        right: 0;
+        display: inline-block;
+        margin-bottom: 20px; /* Add space between button and title */
+        font-size: 0.85em;
+        padding: 8px 15px;
+    }
+
+    /* Ensuring the header centers everything properly */
+    .header {
+        padding: 30px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .header-content h1 {
-        font-size: 1.8em;
+        font-size: 1.5em; /* Reduced size to fit mobile screens better */
+    }
+
+    .header-content p {
+        font-size: 1em;
     }
 
     .main-content {
@@ -522,4 +545,5 @@ textarea {
 .comments-list::-webkit-scrollbar-thumb:hover {
     background: #45a049;
 }
+
 
