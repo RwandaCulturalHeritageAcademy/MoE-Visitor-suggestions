@@ -47,17 +47,17 @@ body::before {
 }
 
 .admin-login-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
+    /* Removed position: absolute, top, and right */
+    display: inline-block;
+    margin-top: 15px; /* Adds space between the text and the button */
     color: white;
     text-decoration: none;
     font-weight: 600;
     background: rgba(76, 175, 80, 0.8);
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 25px;
     transition: all 0.3s ease;
-    font-size: 0.95em;
+    font-size: 0.9em;
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -545,5 +545,6 @@ textarea {
 .comments-list::-webkit-scrollbar-thumb:hover {
     background: #45a049;
 }
+
 
 
